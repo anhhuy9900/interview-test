@@ -6,20 +6,7 @@ import path from 'path';
 import os from 'os';
 
 export const uploadStorage = (): multer.Multer => {
-  //   const pathUpload = path.join(__dirname, `../../tmp/uploads`)
-  //   // await createFolder(pathUpload);
-  //   const storage = multer.diskStorage({
-  //     destination(req, file, cb) {
-  //       cb(null, pathUpload);
-  //     },
-  //     filename(req, file, cb) {
-  //       cb(null, `${generateFileName(file.originalname)}`);
-  //     }
-  //   })
-  //   const upload = multer({ storage });
-
   const upload = multer({ dest: os.tmpdir() });
-
   return upload;
 };
 

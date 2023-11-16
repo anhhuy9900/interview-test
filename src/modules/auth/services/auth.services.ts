@@ -47,15 +47,10 @@ export class AuthService implements IAuthService {
     try {
       if (!token) return null;
       const decoded = jwt.verify(token, SECRET_KEY_ACCESS_TOKEN);
-      console.log('🚀 ------------------------------------------------------------------------------🚀');
-      console.log('🚀 ~ file: auth.services.ts:56 ~ AuthService ~ verifyToken ~ decoded:', decoded);
-      console.log('🚀 ------------------------------------------------------------------------------🚀');
+
       return decoded;
     } catch (err: any) {
-      console.log('🚀 ----------------------------------------------------------------------🚀');
       console.log('🚀 ~ file: auth.services.ts:61 ~ AuthService ~ verifyToken ~ err:', err);
-      console.log('🚀 ----------------------------------------------------------------------🚀');
-      //throw new Error(err.message);
       return null;
     }
   }
@@ -73,12 +68,15 @@ export class AuthService implements IAuthService {
       throw new Error('Email or password is incorrect');
     }
     console.log('🚀 ------------------------------------------------------------------------------🚀');
-    console.log('🚀 ~ file: auth.services.ts:56 ~ AuthService ~ verifyUser ~ EXPIRE_ACCESS_TOKEN:', EXPIRE_ACCESS_TOKEN);
+    console.log(
+      '🚀 ~ file: auth.services.ts:56 ~ AuthService ~ verifyUser ~ EXPIRE_ACCESS_TOKEN:',
+      EXPIRE_ACCESS_TOKEN,
+    );
     const payload = this.generatePayload(user);
     const accessToken = await this.createToken(payload, EXPIRE_ACCESS_TOKEN);
     return {
       ...payload,
-      accessToken
+      accessToken,
     };
   }
 

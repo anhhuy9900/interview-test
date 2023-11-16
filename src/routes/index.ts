@@ -32,7 +32,7 @@ routes.get(
 routes.get(
   '/user/file/:fileId',
   (req, res, next) => AuthService.middleVerifyToken(req, res, next),
-  UserController.getFileInfo.bind(UserController)
+  UserController.getFileInfo.bind(UserController),
 );
 
 export default routes;

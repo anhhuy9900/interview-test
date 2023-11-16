@@ -121,7 +121,7 @@ class UserController {
 
     return ResponseHandler.sendCreated(res, {
       data,
-      msg: ''
+      msg: '',
     });
   }
 
@@ -136,7 +136,7 @@ class UserController {
 
     return ResponseHandler.sendCreated(res, {
       data,
-      msg: ''
+      msg: '',
     });
   }
 }

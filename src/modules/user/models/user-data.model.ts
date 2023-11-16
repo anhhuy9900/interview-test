@@ -1,52 +1,52 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm'
-import { UserModel } from './user.model'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import { UserModel } from './user.model';
 
 export interface IUserDataModel {
-  id: number
-  userId: number
-  s3Key: string
-  fileType: string
-  fileSize: number
-  createdAt: Date
+  id: number;
+  userId: number;
+  s3Key: string;
+  fileType: string;
+  fileSize: number;
+  createdAt: Date;
 }
 
 @Entity({
-  name: 'user-data'
+  name: 'user-data',
 })
 export class UserDataModel implements IUserDataModel {
   @PrimaryGeneratedColumn()
-  id!: number
+  id!: number;
 
   @Column({
     type: 'int',
-    nullable: false
+    nullable: false,
   })
-  userId!: number
+  userId!: number;
 
   @ManyToOne(() => UserModel, (user) => user.files)
-  user!: UserModel
+  user!: UserModel;
 
   @Column({
     type: 'varchar',
     width: 255,
-    nullable: false
+    nullable: false,
   })
-  s3Key!: string
+  s3Key!: string;
 
   @Column({
     type: 'varchar',
     width: 255,
-    nullable: true
+    nullable: true,
   })
-  fileType!: string
+  fileType!: string;
 
   @Column({
     type: 'int',
     width: 255,
-    nullable: true
+    nullable: true,
   })
-  fileSize!: number
+  fileSize!: number;
 
   @CreateDateColumn({ default: () => 'NOW()' })
-  createdAt!: Date
+  createdAt!: Date;
 }
