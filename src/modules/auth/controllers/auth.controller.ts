@@ -6,6 +6,7 @@ import { ValidateRequest } from '../../../validators/request.validator';
 import { AuthService } from '../services/auth.services';
 import { IUserService } from '../../user/user.d';
 import { IAuthService } from '../auth.d';
+import { UserLoginDto } from '../dto/user-login.dto';
 
 class AuthController {
   protected userService: IUserService;
@@ -24,12 +25,15 @@ class AuthController {
    * @param res
    */
   async login(req: Request, res: Response) {
-    const { body } = req;
     try {
+      const { body } = req;
+      const validateErr = await this.validateRequest.validate(UserLoginDto, body);
+      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
+
       const data = await this.authService.verifyUser(body);
       return ResponseHandler.send(res, data);
     } catch (error) {
-      return ResponseHandler.sendUnauthorized(res, (error as Error).message);
+      return ResponseHandler.sendUnauthorized(res, 'Something went wrong with the user');
     }
   }
 }

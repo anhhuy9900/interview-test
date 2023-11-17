@@ -9,9 +9,6 @@
 3. On the terminal, cd into the project root & run the following commands:
    - `git checkout master`
    - `npm i`
-   - `make docker-start`
-
-This will start the server on http://localhost:3800
 
 4. Please update env values for upload to S3 in .env file
 ```
@@ -22,17 +19,40 @@ AWS_ENV_SECRET_ACCESS_KEY=
 AWS_ENV_BUCKET=
 ```
 
-5. Run migration:
-- You need to access node app shell by:
+and information use to connect database
+```
+# DATABASE
+DB_HOST=postgres
+DB_PORT=5433
+DB_NAME=postgres
+DB_USERNAME=postgres
+DB_PASS=postgres
+```
+
+There is information to connect database
+![Screenshot](./screenshots/connect-db.png)
+
+5. After update values for .env please run the command to start docker containers:
+
+- `make docker-start`
+
+and then start docker and you go to the node app and check logs and if the node app shows info like this, it means everything works ok
+![Screenshot](./screenshots/node-app-logs.png)
+
+This will start the server on http://localhost:3800
+
+
+6. Run migration:
+- After start containers in docker, that you need to access node app shell to run migration by:
 
 ```bash
 # Access into node container Shell by the cli
-$ docker exec -it postgres_db /bin/bash
+$ docker exec -it CONTAINER_NAME /bin/sh
 ```
 Or you may open the terminal of the node app container by docker desktop and then access to node container shell environment and run the command below to migrate database
 ![Screenshot](./screenshots/node-container-shell.png)
 
-and then run this cli:
+and then run this cli to migrate database:
 
 ```bash
 # migration database
@@ -51,7 +71,7 @@ $ npm run typeorm migration:run
 ```
 
 ##### Revert migration
-
+- if you want to revert and delete all user's data you can run revert by:
 ```bash
 $ npm run typeorm migration:revert
 ```
@@ -95,7 +115,10 @@ $ make docker-stop
 │   └── index.ts                 
 ```
 
-## 3. APIs Endpoint
+## 3. Structure database
+![Screenshot](./screenshots/postgres-db.png)
+
+## 4. APIs Endpoint
 
 There are APIs endpoint in project:
 ```
@@ -123,7 +146,7 @@ http://localhost:3800/user/files-data/:userId
 http://localhost:3800/user/file/:fileId
 ```
 
-## 3. How to use the service
+## 5. How to use the service
 #### Create user
 - Firstly, you need to create a user's account to travel in this app
 - Use the API to create user
@@ -196,6 +219,43 @@ http://localhost:3800/user/file/:fileId
    }'
    ```
 
+#### Allocate quota limitation upload for each user
+- Default quota limitation for each user is 10MB ( if you want change you can update QUOTA_LIMIT_UPLOAD in .env )
+- Maximum file size upload in MAXIMUM_FILE_SIZE_UPLOAD ( 5MB ) in .env
+- In order to change the quota limitation upload for the user and you're going to use the API to update
+   - URL: http://localhost:3800/user/quota
+   - Method : POST
+   - Headers: Attach the access token inside Authorization
+      ```
+      Authorization: Bearer {{access_token}}
+      ```
+   - Body
+      ```json
+      {
+         "userId": number, // Specific the user that you want to change quota limitation
+         // change the number of limit ( MB )
+         // Example: set 10 -> 10MB quota limit
+         "quotaLimit": number 
+      }
+      ```
+   - Response data
+      ```json
+      {
+         "data": {},
+         "msg": "Updated quota limit success"
+      }
+      ```
+- Import API by postman curl
+   ```
+   curl --location --request PUT 'http://localhost:3800/user/quota' \
+   --header 'Authorization: Bearer {{access_token}}
+   --header 'Content-Type: application/json' \
+   --data '{
+      "userId": "",
+      "quotaLimit": 10
+   }'
+   ```
+
 #### Upload file
 - In order to upload a file to S3, you will use the API below:
    - URL: http://localhost:3800/user/upload
@@ -209,7 +269,7 @@ http://localhost:3800/user/file/:fileId
       file: choose file upload
       ```
       - See the screenshot how to choose a file
-      ![Screenshot](./screenshots//img-upload.png)
+      ![Screenshot](./screenshots/img-upload.png)
    - Response data
       ```json
       {
@@ -230,6 +290,8 @@ http://localhost:3800/user/file/:fileId
    --header 'Authorization: Bearer {{access_token}} 
    --form 'file=@""'
    ``` 
+- After you have uploaded a file to S3 and then you can access the S3 service on AWS, and open the bucket you will see file structure uploaded: 
+![Screenshot](./screenshots/s3-file-info.png)
 
 #### Get Files Data
 - After you have uploaded files and if you want to view files that have been uploaded please call this API to check

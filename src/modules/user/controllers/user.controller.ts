@@ -58,7 +58,7 @@ class UserController {
 
     return ResponseHandler.sendCreated(res, {
       data: {},
-      msg: 'Updated quota limit success',
+      msg: 'Updated quota limitation success',
     });
   }
 
@@ -76,17 +76,14 @@ class UserController {
       if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
 
       const quotaUsage = await this.userService.getUserQuotaUsage(user.id);
-      console.log('🚀 --------------------------------------------------------------------------------🚀');
-      console.log('🚀 ~ file: user.controller.ts:61 ~ UserController ~ upload ~ quotaUsage:', quotaUsage);
-      console.log('🚀 --------------------------------------------------------------------------------🚀');
 
       const quotaLimit = quotaUsage?.quotaLimit;
       if (Number(quotaUsage?.totalFileSizeUsed) + uploadFile.size >= quotaLimit) {
         return ResponseHandler.sendBadRequest(
           res,
-          `Your quota used to be upload exceeds the limitation of the system. The limitation of the upload quota is ${covertBytesToMb(
+          `The upload quota has exceeded the limitation of the system. The limitation of the quota is ${covertBytesToMb(
             quotaLimit,
-          )} MB`,
+          )} MB. Please choose another file.`,
         );
       }
 
@@ -95,11 +92,11 @@ class UserController {
 
       return ResponseHandler.sendCreated(res, {
         data,
-        msg: `User's file uploaded success`
+        msg: `User's file uploaded success`,
       });
     } catch (err) {
       console.log('🚀 ~ file: user.controller.ts:39 ~ UserController ~ upload ~ err:', err);
-      return ResponseHandler.sendForbidden(res, 'Have a problem with upload file');
+      return ResponseHandler.sendForbidden(res, 'Something went wrong with upload file');
     }
   }
 
