@@ -194,10 +194,10 @@ http://localhost:3800/user/file/:fileId
          ```json
          {
             "data": {
-               "id": number, # user id
-               "userName": string,
-               "email": string,
-               "accessToken": string // use this access token for authenticate with some APIs
+               "id": "number", #user id
+               "userName": "string",
+               "email": "string",
+               "accessToken": "string" // use this access token to authenticate with some APIs
             },
             "msg": "User created success"
          }
