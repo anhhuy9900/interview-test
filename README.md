@@ -148,7 +148,7 @@ http://localhost:3800/user/file/:fileId
    - Body
       ```json
       {
-         "userName": string,
+         "userName": "string",
          "email": string,
          "password": string
       }
@@ -161,7 +161,7 @@ http://localhost:3800/user/file/:fileId
             "email": string,
             "password": string,
             "id": number,
-            "quotaLimit": number, // quota limitation for upload ( bytes )
+            "quotaLimit": number, "// quota limitation for upload ( bytes )"
             "updatedAt": Date,
             "createdAt": Date
          },
