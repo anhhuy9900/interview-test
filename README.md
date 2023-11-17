@@ -283,6 +283,14 @@ http://localhost:3800/user/file/:fileId
    --header 'Authorization: Bearer {{access_token}} 
    --form 'file=@""'
    ``` 
+- If your upload file exceeds the quota limitation and then the the service will respond an error like this:
+   ```json
+   {
+      "success": false,
+      "message": "The upload quota has exceeded the limitation of the system. The limitation of the quota is 10.00 MB. Please choose another file."
+   }
+   ```
+
 - After you have uploaded a file to S3 and then you can access the S3 service on AWS, and open the bucket you will see file structure uploaded: 
 ![Screenshot](./screenshots/s3-file-info.png)
 
@@ -294,12 +302,6 @@ http://localhost:3800/user/file/:fileId
       ```
       Authorization: Bearer {{access_token}}
       ```
-   - Body: form-data
-      ```
-      file: choose file upload
-      ```
-      - See the screenshot how to choose a file
-      ![Screenshot](./screenshots//img-upload.png)
    - Response data
       ```json
       {
