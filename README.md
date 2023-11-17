@@ -149,21 +149,21 @@ http://localhost:3800/user/file/:fileId
       ```json
       {
          "userName": "string",
-         "email": string,
-         "password": string
+         "email": "string",
+         "password": "string"
       }
       ```
    - Response data
       ```json
       {
          "data": {
-            "userName": string,
-            "email": string,
-            "password": string,
-            "id": number,
-            "quotaLimit": number, "// quota limitation for upload ( bytes )"
-            "updatedAt": Date,
-            "createdAt": Date
+            "userName": "string",
+            "email": "string",
+            "password": "string",
+            "id": "number",
+            "quotaLimit": "number", // quota limitation for upload ( bytes )
+            "updatedAt": "Date",
+            "createdAt": "Date"
          },
          "msg": "User created success"
       }
@@ -186,15 +186,15 @@ http://localhost:3800/user/file/:fileId
       - Body
          ```json
          {
-            "email": string,
-            "password": string
+            "email": "string",
+            "password": "string"
          }
          ```
       - Response data
          ```json
          {
             "data": {
-               "id": "number", #user id
+               "id": "number", // user id
                "userName": "string",
                "email": "string",
                "accessToken": "string" // use this access token to authenticate with some APIs
@@ -225,10 +225,10 @@ http://localhost:3800/user/file/:fileId
    - Body
       ```json
       {
-         "userId": number, // Specific the user that you want to change quota limitation
+         "userId": "number", // Specific the user that you want to change quota limitation
          // change the number of limit ( MB )
          // Example: set 10 -> 10MB quota limit
-         "quotaLimit": number 
+         "quotaLimit": "number" 
       }
       ```
    - Response data
@@ -267,12 +267,12 @@ http://localhost:3800/user/file/:fileId
       ```json
       {
          "data": {
-            "userId": number, // user id
-            "s3Key": string,
-            "fileType": string,
-            "fileSize": number,
-            "id": number, //fileId
-            "createdAt": Date
+            "userId": "number", // user id
+            "s3Key": "string",
+            "fileType": "string",
+            "fileSize": "number",
+            "id": "number", //fileId
+            "createdAt": "Date"
          },
          "msg": "User created success"
       }
@@ -307,12 +307,12 @@ http://localhost:3800/user/file/:fileId
       {
          "data": [
             {
-                  "id": number, // file id
-                  "userId": number, // user id
-                  "s3Key": string, // s3 key
-                  "fileType": string,
-                  "fileSize": number, // file size of file uploaded ( byte )
-                  "createdAt": Date
+                  "id": "number", // file id
+                  "userId": "number", // user id
+                  "s3Key": "string", // s3 key
+                  "fileType": "string",
+                  "fileSize": "number", // file size of file uploaded ( byte )
+                  "createdAt": "Date"
             },
             ...
          ],
@@ -337,13 +337,13 @@ http://localhost:3800/user/file/:fileId
       {
          "data": [
             {
-                  "id": number, // file id
-                  "userId": number, // user id
-                  "s3Key": string,
-                  "fileType": string,
-                  "fileSize": number,
-                  "createdAt": Date,
-                  "s3SignUrl": string // S3 sign url
+                  "id": "number", // file id
+                  "userId": "number", // user id
+                  "s3Key": "string",
+                  "fileType": "string",
+                  "fileSize": "number",
+                  "createdAt": "Date",
+                  "s3SignUrl": "string" // S3 sign url
             },
             ...
          ],
