@@ -19,18 +19,7 @@ AWS_ENV_SECRET_ACCESS_KEY=
 AWS_ENV_BUCKET=
 ```
 
-and information use to connect database
-```
-# DATABASE
-DB_HOST=postgres
-DB_PORT=5433
-DB_NAME=postgres
-DB_USERNAME=postgres
-DB_PASS=postgres
-```
-
-There is information to connect database
-![Screenshot](./screenshots/connect-db.png)
+You may overwrite any of the other `.env` variables within this file
 
 5. After update values for .env please run the command to start docker containers:
 
@@ -41,6 +30,12 @@ and then start docker and you go to the node app and check logs and if the node 
 
 This will start the server on http://localhost:3800
 
+There is information to connect database
+![Screenshot](./screenshots/connect-db.png)
+- Host: localhost
+- Database: postgres
+- Username: postgres
+- password: postgres
 
 6. Run migration:
 - After start containers in docker, that you need to access node app shell to run migration by:
@@ -59,8 +54,6 @@ and then run this cli to migrate database:
 $ npm run typeorm migration:run
 ```
 
-
-You may overwrite any of the other `.env` variables within this file
 
 ### Migration
 
