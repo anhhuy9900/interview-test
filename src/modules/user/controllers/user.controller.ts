@@ -1,23 +1,19 @@
 import { Request, Response } from 'express';
 import { ResponseHandler } from '../../../utils/response.util';
-import { IUserService, UserService } from '../services/user.service';
+import { UserService } from '../services/user.service';
+import { IUserService } from '../user.d';
 import { UserRepository } from '../repositories/user.repository';
-import { UserDataRepository } from '../repositories/user-data.repository';
-import { ValidateRequest } from '../../../services/request.validator';
+import { ValidateRequest } from '../../../validators/request.validator';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { hashPassword, covertBytesToMb, covertMbToByte } from '../../../utils';
 import { UploadFileDto } from '../dto/upload.dto';
 import { UpdateUserQuotaDto } from '../dto/update-user-quota.dto';
-import { UploadFile } from '../../../services/upload.validator';
 import { IUserModel } from '../models/user.model';
 
 class UserController {
   protected userService: IUserService;
   protected validateRequest: ValidateRequest;
 
-  /**
-   * Constructor
-   */
   constructor(userService: IUserService) {
     this.userService = userService;
     this.validateRequest = new ValidateRequest();
@@ -99,7 +95,7 @@ class UserController {
 
       return ResponseHandler.sendCreated(res, {
         data,
-        msg: `User's file uploaded success`,
+        msg: `User's file uploaded success`
       });
     } catch (err) {
       console.log('🚀 ~ file: user.controller.ts:39 ~ UserController ~ upload ~ err:', err);
@@ -113,9 +109,6 @@ class UserController {
    * @param res
    */
   async getFilesData(req: Request, res: Response) {
-    console.log('🚀 ---------------------------------------------------------------------------------🚀');
-    console.log('🚀 ~ file: user.controller.ts:116 ~ UserController ~ getFilesData ~ req:', req);
-    console.log('🚀 ---------------------------------------------------------------------------------🚀');
     const { userId } = req.params;
     const data = await this.userService.getFilesData(Number(userId));
 

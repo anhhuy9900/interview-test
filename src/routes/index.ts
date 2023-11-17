@@ -10,7 +10,7 @@ routes.post('/user', UserController.create.bind(UserController));
 
 routes.post(
   '/user/upload',
-  (req, res, next) => AuthService.middleVerifyToken(req, res, next),
+  (req, res, next) => AuthService.authenticate(req, res, next),
   uploadStorage().single('file'),
   UserController.upload.bind(UserController),
 );
@@ -19,19 +19,19 @@ routes.post('/user/login', AuthController.login.bind(AuthController));
 
 routes.put(
   '/user/quota',
-  (req, res, next) => AuthService.middleVerifyToken(req, res, next),
+  (req, res, next) => AuthService.authenticate(req, res, next),
   UserController.updateQuota.bind(UserController),
 );
 
 routes.get(
   '/user/files-data/:userId',
-  (req, res, next) => AuthService.middleVerifyToken(req, res, next),
+  (req, res, next) => AuthService.authenticate(req, res, next),
   UserController.getFilesData.bind(UserController),
 );
 
 routes.get(
   '/user/file/:fileId',
-  (req, res, next) => AuthService.middleVerifyToken(req, res, next),
+  (req, res, next) => AuthService.authenticate(req, res, next),
   UserController.getFileInfo.bind(UserController),
 );
 

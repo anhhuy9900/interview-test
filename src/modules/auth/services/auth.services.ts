@@ -5,13 +5,7 @@ import { UserRepository } from '../../user/repositories/user.repository';
 import { IUserModel } from '../../user/models/user.model';
 import { ResponseHandler } from '../../../utils/response.util';
 import { SECRET_KEY_ACCESS_TOKEN, EXPIRE_ACCESS_TOKEN } from '../../../config';
-
-export interface IAuthService {
-  createToken(body: object, expireIn: number): Promise<string>;
-  verifyToken(token?: string): string | jwt.JwtPayload | null;
-  verifyUser(body: object): Promise<null | object>;
-  middleVerifyToken(req: Request, res: Response, next: NextFunction): void;
-}
+import { IAuthService } from '../auth.d';
 
 export class AuthService implements IAuthService {
   protected userRepository: UserRepository;
@@ -21,7 +15,7 @@ export class AuthService implements IAuthService {
   }
 
   /**
-   * create token
+   * Create token
    * @param body
    * @returns
    */
@@ -67,16 +61,12 @@ export class AuthService implements IAuthService {
     if (!user || !bcrypt.compareSync(password, user.password)) {
       throw new Error('Email or password is incorrect');
     }
-    console.log('🚀 ------------------------------------------------------------------------------🚀');
-    console.log(
-      '🚀 ~ file: auth.services.ts:56 ~ AuthService ~ verifyUser ~ EXPIRE_ACCESS_TOKEN:',
-      EXPIRE_ACCESS_TOKEN,
-    );
+
     const payload = this.generatePayload(user);
     const accessToken = await this.createToken(payload, EXPIRE_ACCESS_TOKEN);
     return {
       ...payload,
-      accessToken,
+      accessToken
     };
   }
 
@@ -96,7 +86,7 @@ export class AuthService implements IAuthService {
   /**
    * Middle Verify Token
    */
-  middleVerifyToken(req: Request, res: Response, next: NextFunction) {
+  authenticate(req: Request, res: Response, next: NextFunction) {
     const verifyData = this.verifyToken(req.headers.authorization?.split(' ')[1]) || null;
     if (!verifyData) {
       return ResponseHandler.sendUnauthorized(res, 'Token is expired');

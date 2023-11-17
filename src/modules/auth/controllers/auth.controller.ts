@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import { ResponseHandler } from '../../../utils/response.util';
-import { IUserService, UserService } from '../../user/services/user.service';
+import { UserService } from '../../user/services/user.service';
 import { UserRepository } from '../../user/repositories/user.repository';
-import { ValidateRequest } from '../../../services/request.validator';
-import { AuthService, IAuthService } from '../services/auth.services'
+import { ValidateRequest } from '../../../validators/request.validator';
+import { AuthService } from '../services/auth.services';
+import { IUserService } from '../../user/user.d';
+import { IAuthService } from '../auth.d';
 
 class AuthController {
   protected userService: IUserService;

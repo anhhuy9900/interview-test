@@ -17,24 +17,24 @@ export class ResponseHandler {
     return res.status(HTTP_CODE.CREATED).send(data);
   }
 
-  static sendBadRequest<T>(res: Response, message: string): Response<T> {
+  static sendBadRequest<T>(res: Response, message: string = ''): Response<T> {
     return res.status(HTTP_CODE.BAD_REQUEST).send({
       success: false,
-      message: message,
+      message
     });
   }
 
-  static sendUnauthorized<T>(res: Response, message: string): Response<T> {
+  static sendUnauthorized<T>(res: Response, message: string = ''): Response<T> {
     return res.status(HTTP_CODE.UNAUTHORIZED).send({
       success: false,
-      message: message,
+      message
     });
   }
 
-  static sendForbidden<T>(res: Response, message: string): Response<T> {
+  static sendForbidden<T>(res: Response, message: string = ''): Response<T> {
     return res.status(HTTP_CODE.FORBIDDEN).send({
       success: false,
-      message,
+      message
     });
   }
 }
