@@ -27,7 +27,7 @@ class UserController {
   async create(req: Request, res: Response) {
     const { body } = req;
     const validateErr = await this.validateRequest.validate(CreateUserDto, body);
-    if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
+    if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
     const data = await this.userService.createUser({
       ...body,
       password: hashPassword(body.password),
@@ -48,7 +48,7 @@ class UserController {
     const { quotaLimit, userId } = req.body;
 
     const validateErr = await this.validateRequest.validate(UpdateUserQuotaDto, req.body);
-    if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
+    if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
 
     const data = await this.userService.repository.update({ quotaLimit: covertMbToByte(quotaLimit) } as IUserModel, {
       id: userId,
@@ -73,7 +73,7 @@ class UserController {
 
       const user = (req as Record<string, any>).user;
       const validateErr = await this.validateRequest.validate(UploadFileDto, uploadFile);
-      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
+      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
 
       const quotaUsage = await this.userService.getUserQuotaUsage(user.id);
 
@@ -106,13 +106,17 @@ class UserController {
    * @param res
    */
   async getFilesData(req: Request, res: Response) {
-    const { userId } = req.params;
-    const data = await this.userService.getFilesData(Number(userId));
+    try {
+      const { userId } = req.params;
+      const data = await this.userService.getFilesData(Number(userId));
 
-    return ResponseHandler.sendCreated(res, {
-      data,
-      msg: '',
-    });
+      return ResponseHandler.sendCreated(res, {
+        data,
+        msg: '',
+      });
+    } catch (err) {
+      return ResponseHandler.sendForbidden(res, 'The file is not exist in system');
+    }
   }
 
   /**
@@ -121,13 +125,17 @@ class UserController {
    * @param res
    */
   async getFileInfo(req: Request, res: Response) {
-    const { fileId } = req.params;
-    const data = await this.userService.getS3Info(Number(fileId));
+    try {
+      const { fileId } = req.params;
+      const data = await this.userService.getS3Info(Number(fileId));
 
-    return ResponseHandler.sendCreated(res, {
-      data,
-      msg: '',
-    });
+      return ResponseHandler.sendCreated(res, {
+        data,
+        msg: '',
+      });
+    } catch (err) {
+      return ResponseHandler.sendForbidden(res, 'The file is not exist in system');
+    }
   }
 }
 

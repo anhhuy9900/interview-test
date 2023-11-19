@@ -168,6 +168,19 @@ http://localhost:3800/user/file/:fileId
          "msg": "User created success"
       }
       ```
+   - Response Error format
+      ```json
+      {
+         "success": false,
+         "message": "userName should not be null or undefined",
+      }
+      ```
+       ```json
+      {
+         "success": false,
+         "message": "Email should not be null or undefined",
+      }
+      ```
 - Import API by postman curl
    ```
    curl --location 'http://localhost:3800/user' \
@@ -200,6 +213,31 @@ http://localhost:3800/user/file/:fileId
                "accessToken": "string" // use this access token to authenticate with some APIs
             },
             "msg": "User created success"
+         }
+         ```
+      - Response Error format
+         - Email's empty
+         HTTP_CODE: 400 Bad Request
+         ```json
+         {
+            "success": false,
+            "message": "email should not be null or undefined"
+         }
+         ```
+         - Password's empty
+         HTTP_CODE: 400 Bad Request
+         ```json
+         {
+            "success": false,
+            "message": "password should not be null or undefined"
+         }
+         ```
+         - Wrong email and password
+         HTTP_CODE: 400 Bad Request
+         ```json
+         {
+            "success": false,
+            "message": "The email or password incorrect"
          }
          ```
 - Import API by postman curl
@@ -236,6 +274,28 @@ http://localhost:3800/user/file/:fileId
       {
          "data": {},
          "msg": "Updated quota limit success"
+      }
+      ```
+   - Response Error format
+      HTTP_CODE: 400 Bad Request
+      - quotaLimit don't match quota in system
+      ```json
+      {
+         "success": false,
+         "message": "Minimum storage quota is 10MB"
+      }
+      ```
+      ```json
+      {
+         "success": false,
+         "message": "Minimum storage quota is 500MB"
+      }
+      ```
+      - Update with user's not exists
+      ```json
+      {
+         "success": false,
+         "message": "User's not exists in system"
       }
       ```
 - Import API by postman curl
@@ -277,19 +337,29 @@ http://localhost:3800/user/file/:fileId
          "msg": "User created success"
       }
       ```
+   - Response Error format
+      - File upload's empty
+      HTTP_CODE: 400 Bad Request
+      ```json
+      {
+         "success": false,
+         "message": "Please choose a file to upload"
+      }
+      ```
+      - If your upload file exceeds the quota limitation and then the the service will respond an error like this:
+      HTTP_CODE: 403 Forbidden
+      ```json
+      {
+         "success": false,
+         "message": "The upload quota has exceeded the limitation of the system. The limitation of the quota is 10.00 MB. Please choose another file."
+      }
+      ```
 - Import API by postman curl
    ```
    curl --location 'http://localhost:3800/user/upload' \
    --header 'Authorization: Bearer {{access_token}} 
    --form 'file=@""'
    ``` 
-- If your upload file exceeds the quota limitation and then the the service will respond an error like this:
-   ```json
-   {
-      "success": false,
-      "message": "The upload quota has exceeded the limitation of the system. The limitation of the quota is 10.00 MB. Please choose another file."
-   }
-   ```
 
 - After you have uploaded a file to S3 and then you can access the S3 service on AWS, and open the bucket you will see file structure uploaded: 
 ![Screenshot](./screenshots/s3-file-info.png)
@@ -317,6 +387,15 @@ http://localhost:3800/user/file/:fileId
             ...
          ],
          "msg": ""
+      }
+      ```
+   - Response Error format
+      - Wrong fileId
+      HTTP_CODE: 403 Forbidden
+      ```json
+      {
+         "success": false,
+         "message": "The file is not exist in system"
       }
       ```
 - Import API by postman curl
@@ -350,8 +429,26 @@ http://localhost:3800/user/file/:fileId
          "msg": ""
       }
       ```
+   - Response Error format
+      - Wrong fileId
+      HTTP_CODE: 403 Forbidden
+      ```json
+      {
+         "success": false,
+         "message": "The file is not exist in system"
+      }
+      ```
 - Import API by postman curl
    ```
    curl --location 'http://localhost:3800/user/file/:fileId' \
    --header 'Authorization: Bearer {{access_token}}'
    ```
+
+#### Token Expired
+HTTP_CODE: 401 Unauthorized
+```json
+{
+    "success": false,
+    "message": "Token is expired"
+}
+```

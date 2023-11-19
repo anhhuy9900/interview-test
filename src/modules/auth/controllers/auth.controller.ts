@@ -28,12 +28,12 @@ class AuthController {
     try {
       const { body } = req;
       const validateErr = await this.validateRequest.validate(UserLoginDto, body);
-      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr);
+      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
 
       const data = await this.authService.verifyUser(body);
       return ResponseHandler.send(res, data);
     } catch (error) {
-      return ResponseHandler.sendUnauthorized(res, 'Something went wrong with the user');
+      return ResponseHandler.sendBadRequest(res, 'The email or password incorrect');
     }
   }
 }
