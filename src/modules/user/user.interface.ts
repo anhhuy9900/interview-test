@@ -1,8 +1,7 @@
-import { Response, Request, NextFunction } from 'express';
-import { UserRepository } from '../user/repositories/user.repository';
-import { UserDataRepository } from '../user/repositories/user-data.repository';
-import { UserModel, IUserModel } from '../user/models/user.model';
-import { UserDataModel, IUserDataModel } from '../user/models/user-data.model';
+import { UserRepository } from './repositories/user.repository';
+import { UserDataRepository } from './repositories/user-data.repository';
+import { UserModel, IUserModel } from './models/user.model';
+import { UserDataModel, IUserDataModel } from './models/user-data.model';
 
 export interface IUserService {
   repository: UserRepository;

@@ -4,8 +4,8 @@ import { UserService } from '../../user/services/user.service';
 import { UserRepository } from '../../user/repositories/user.repository';
 import { ValidateRequest } from '../../../validators/request.validator';
 import { AuthService } from '../services/auth.services';
-import { IUserService } from '../../user/user.d';
-import { IAuthService } from '../auth.d';
+import { IUserService } from '../../user/user.interface';
+import { IAuthService } from '../auth.interface';
 import { UserLoginDto } from '../dto/user-login.dto';
 
 class AuthController {

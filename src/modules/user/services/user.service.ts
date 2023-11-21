@@ -5,7 +5,7 @@ import { UserDataRepository } from '../repositories/user-data.repository';
 import { AWS_S3 } from '../../../services/s3.service';
 import { generateFileName } from '../../../utils';
 import fs from 'fs';
-import { IUserService } from '../user.d';
+import { IUserService } from '../user.interface';
 
 export class UserService implements IUserService {
   public repository: UserRepository;

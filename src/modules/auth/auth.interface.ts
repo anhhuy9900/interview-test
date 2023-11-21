@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
 export interface IAuthService {
   createToken(body: object, expireIn: number): Promise<string>;

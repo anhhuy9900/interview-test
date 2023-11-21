@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ResponseHandler } from '../../../utils/response.util';
 import { UserService } from '../services/user.service';
-import { IUserService } from '../user.d';
+import { IUserService } from '../user.interface';
 import { UserRepository } from '../repositories/user.repository';
 import { ValidateRequest } from '../../../validators/request.validator';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -25,18 +25,27 @@ class UserController {
    * @param res
    */
   async create(req: Request, res: Response) {
-    const { body } = req;
-    const validateErr = await this.validateRequest.validate(CreateUserDto, body);
-    if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
-    const data = await this.userService.createUser({
-      ...body,
-      password: hashPassword(body.password),
-    });
+    try {
+      const { body } = req;
+      const validateErr = await this.validateRequest.validate(CreateUserDto, body);
+      if (validateErr.length) return ResponseHandler.sendBadRequest(res, validateErr[0]);
 
-    return ResponseHandler.sendCreated(res, {
-      data,
-      msg: 'User created success',
-    });
+      const user = await this.userService.repository.findOne({ where: { email: body.email } });
+      if (user)
+        return ResponseHandler.sendBadRequest(res, 'The email is existing in system. Please choose another email');
+
+      const data = await this.userService.createUser({
+        ...body,
+        password: hashPassword(body.password)
+      });
+
+      return ResponseHandler.sendCreated(res, {
+        data,
+        msg: 'User created success'
+      });
+    } catch (err) {
+      return ResponseHandler.sendForbidden(res, 'Something went wrong in creating user');
+    }
   }
 
   /**
@@ -112,7 +121,7 @@ class UserController {
 
       return ResponseHandler.sendCreated(res, {
         data,
-        msg: '',
+        msg: ''
       });
     } catch (err) {
       return ResponseHandler.sendForbidden(res, 'The file is not exist in system');

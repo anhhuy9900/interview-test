@@ -5,7 +5,7 @@ import { UserRepository } from '../../user/repositories/user.repository';
 import { IUserModel } from '../../user/models/user.model';
 import { ResponseHandler } from '../../../utils/response.util';
 import { SECRET_KEY_ACCESS_TOKEN, EXPIRE_ACCESS_TOKEN } from '../../../config';
-import { IAuthService } from '../auth.d';
+import { IAuthService } from '../auth.interface';
 
 export class AuthService implements IAuthService {
   protected userRepository: UserRepository;
